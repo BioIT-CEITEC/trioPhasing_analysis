@@ -1,0 +1,91 @@
+{
+  "workflow_description": {
+    "name": "germline_small_var_call",
+    "version": 2.0,
+    "label": "Germline small variant calling",
+    "type": "germline_small_var_call",
+    "run_parameters": {
+      "cpu": 32,
+      "memory": 124
+    },
+    "inputs": [
+      "mapped/{sample}.bam*"
+    ],
+    "outputs": [
+      "config.json",
+      "logs/*",
+      "germline_varcalls/*"
+    ]
+  },
+  "general_params": [
+    "entity_name",
+    "sample_name"
+  ],
+  "requested_params": [
+    "organism",
+    "assembly",
+    "release",
+    "lib_ROI"
+  ],
+  "gui_params": {
+    "primary": {
+      "germline_use_strelka": {
+        "label": "Use strelka for germline variant calling.",
+        "type": "bool",
+        "default": true
+      },
+      "germline_use_vardict": {
+        "label": "Use vardict for germline variant calling.",
+        "type": "bool",
+        "default": true
+      },
+      "germline_use_haplotypecaller": {
+        "label": "Use haplotypecaller for germline variant calling.",
+        "type": "bool",
+        "default": true
+      },
+      "germline_use_varscan": {
+        "label": "Use varscan for germline variant calling.",
+        "type": "bool",
+        "default": false
+      },
+      "calling_type": {
+        "type": "constant",
+        "default": "germline"
+      },
+      "format": {
+        "label": "Result variant table format",
+        "type": "enum",
+        "dynamicEnumName": "small_var_format",
+        "filters": {
+          "group": {
+            "param": "calling_type",
+            "type": "value",
+            "showGroupLabel": false
+          }
+        }
+      }
+    },
+    "detailed": {
+      "min_variant_frequency": {
+        "label": "Minimal variant frequency to report in percent.",
+        "type": "int",
+        "default": 25
+      },
+      "min_callers_threshold": {
+        "label": "Minimal number of callers supporting variant to report it.",
+        "type": "int",
+        "default": 1
+      },
+      "min_var_reads_threshold": {
+        "label": "Minimal number of variant reads supporting variant to report it.",
+        "type": "int",
+        "default": 5
+      },
+      "tumor_normal_paired": {
+        "type": "constant",
+        "default": false
+      }    
+    }
+  }
+}
