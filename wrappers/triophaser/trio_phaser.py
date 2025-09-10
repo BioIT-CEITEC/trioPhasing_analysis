@@ -230,35 +230,34 @@ else:
     exit()
 
 # Extract fasta reference file
-os.system("unzip /fasta_references.zip -d /fasta_references")
-os.system("gzip -d /fasta_references/*.gz")
+#os.system("unzip fasta_references.zip -d fasta_references")
+#os.system("gzip -d fasta_references/*.gz")
 
 # Extract genetic maps
-os.system("tar -xf /shapeit4/maps/genetic_maps.b38.tar.gz -C"
-            " /shapeit4/maps/")
-os.system("tar -xf /shapeit4/maps/genetic_maps.b37.tar.gz -C"
-            " /shapeit4/maps/")
+#os.system("tar -xf shapeit4/maps/genetic_maps.b38.tar.gz -C"
+  #          " /shapeit4/maps/")
+#os.system("tar -xf shapeit4/maps/genetic_maps.b37.tar.gz -C"
+ #           " /shapeit4/maps/")
 
 # Download haplotype references if necessary
-if build_version == 38 \
-    and not os.path.exists(f"{haplotype_path}ALL.chr1.shapeit2_integrated_"
-    f"snvindels_v2a_27022019.GRCh38.phased.vcf.gz"):
-    os.system("wget --no-check-certificate https://files.osf.io/v1/"
-    "resources/rbzma/providers/osfstorage/608b8dd719183d00cb5556c3/?zip="
-    " -O /haplotype_references.zip")
-    os.system(f"unzip /haplotype_references.zip -d {haplotype_path}")
-    os.system(f"chmod 777 {haplotype_path}*")
-    os.system("rm /haplotype_references.zip")
+#if build_version == 38 \
+#    and not os.path.exists(f"{haplotype_path}ALL.chr1.shapeit2_integrated_"
+#    f"snvindels_v2a_27022019.GRCh38.phased.vcf.gz"):
+#    os.system("wget --no-check-certificate https://files.osf.io/v1/resources/rbzma/providers/osfstorage/608b8dd719183d00cb5556c3/?zip="
+#    " -O /haplotype_references.zip")
+#    os.system(f"unzip /haplotype_references.zip -d {haplotype_path}")
+#    os.system(f"chmod 777 {haplotype_path}*")
+#    os.system("rm /haplotype_references.zip")
 
-elif build_version == 37 \
-    and not os.path.exists(f"{haplotype_path}ALL.chr1.phase3_shapeit2_"
-    f"mvncall_integrated_v5b.20130502.genotypes.vcf.gz"):
-    os.system("wget --no-check-certificate https://files.osf.io/v1/"
-    "resources/rbzma/providers/osfstorage/60b6c4639096b7023a63c8d0/?zip="
-    " -O /haplotype_references.zip")
-    os.system(f"unzip /haplotype_references.zip -d {haplotype_path}")
-    os.system(f"chmod 777 {haplotype_path}*")
-    os.system("rm /haplotype_references.zip")
+#elif build_version == 37 \
+#    and not os.path.exists(f"{haplotype_path}ALL.chr1.phase3_shapeit2_"
+#    f"mvncall_integrated_v5b.20130502.genotypes.vcf.gz"):
+#    os.system("wget --no-check-certificate https://files.osf.io/v1/"
+#    "resources/rbzma/providers/osfstorage/60b6c4639096b7023a63c8d0/?zip="
+#    " -O /haplotype_references.zip")
+#    os.system(f"unzip /haplotype_references.zip -d {haplotype_path}")
+#    os.system(f"chmod 777 {haplotype_path}*")
+#    os.system("rm /haplotype_references.zip")
 
 # Iterate through each trio and phase
 for trio_list in trio_nested_list:
@@ -309,8 +308,8 @@ for trio_list in trio_nested_list:
         os.system(f"gatk IndexFeatureFile -F {file}")
 
     if build_version == 38:
-        os.system(f"gatk CombineGVCFs -R /fasta_references/"
-        f"Homo_sapiens_assembly38.fasta {file_string} -O {temp_combined_name}")
+        os.system(f"gatk CombineGVCFs -R /mnt/data/ceitec_cfg2/710000-CEITEC/713000-cmm/713016-bioit/resources/references/homo_sapiens/GRCh38/seq/"
+        f"GRCh38_ncbi.fa {file_string} -O {temp_combined_name}")
         timeElapsedMinutes = round((time.time()-current_time) / 60, 2)
         print(f"Trio has been combined and written to a temporary file."
                 f" Time elapsed: {timeElapsedMinutes} minutes.")
@@ -318,14 +317,14 @@ for trio_list in trio_nested_list:
         current_time = time.time()
         os.system(f"gatk IndexFeatureFile -F {temp_combined_name}")
         os.system(f"gatk --java-options '-Xmx4g' GenotypeGVCFs"
-        f" -R /fasta_references/Homo_sapiens_assembly38.fasta"
+        f" -R /mnt/data/ceitec_cfg2/710000-CEITEC/713000-cmm/713016-bioit/resources/references/homo_sapiens/GRCh38/seq/GRCh38_ncbi.fa"
         f" -V {temp_combined_name} -O {temp_genotyped_name}")
         timeElapsedMinutes = round((time.time()-current_time) / 60, 2)
         print(f"Trio has been join-genotyped."
                 f" Time elapsed: {timeElapsedMinutes} minutes.")
     elif build_version == 37:
-        os.system(f"gatk CombineGVCFs -R /fasta_references/"
-        f"human_g1k_v37_modified.fasta {file_string} -O {temp_combined_name}")
+        os.system(f"gatk CombineGVCFs -R /mnt/data/ceitec_cfg2/710000-CEITEC/713000-cmm/713016-bioit/resources/references/homo_sapiens/GRCh37/seq/"
+        f"GRCh37_ncbi.fa {file_string} -O {temp_combined_name}")
         timeElapsedMinutes = round((time.time()-current_time) / 60, 2)
         print(f"Trio has been combined and written to a temporary file."
                 f" Time elapsed: {timeElapsedMinutes} minutes.")
@@ -333,7 +332,7 @@ for trio_list in trio_nested_list:
         current_time = time.time()
         os.system(f"gatk IndexFeatureFile -F {temp_combined_name}")
         os.system(f"gatk --java-options '-Xmx4g' GenotypeGVCFs"
-        f" -R /fasta_references/human_g1k_v37_modified.fasta"
+        f" -R /mnt/data/ceitec_cfg2/710000-CEITEC/713000-cmm/713016-bioit/resources/references/homo_sapiens/GRCh37/seq/GRCh37_ncbi.fa"
         f" -V {temp_combined_name} -O {temp_genotyped_name}")
         timeElapsedMinutes = round((time.time()-current_time) / 60, 2)
         print(f"Trio has been joint-genotyped."
@@ -482,9 +481,9 @@ for trio_list in trio_nested_list:
         for i in range(22, 0, -1):
             if os.path.exists(f"/tmp/genotyped_chr{i}.vcf.gz"):
                 task_list.append(f"shapeit4 --input /tmp/genotyped_"
-                f"chr{i}.vcf.gz --map /shapeit4/maps/chr{i}.b38.gmap.gz"
+                f"chr{i}.vcf.gz --map /mnt/data/ceitec_cfg2/710000-CEITEC/713000-cmm/713016-bioit/resources/references/homo_sapiens/GRCh38/tool_data/shapeit4/maps/chr{i}.b38.gmap.gz"
                 f" --region {i} --output /tmp/phased_chr{i}_with_scaffold"
-                f".vcf.gz --reference {haplotype_path}ALL.chr{i}.shapeit2_"
+                f".vcf.gz --reference /mnt/data/ceitec_cfg2/710000-CEITEC/713000-cmm/713016-bioit/resources/references/homo_sapiens/GRCh38/tool_data/shapeit4/haplotypes_reference/ALL.chr{i}.shapeit2_"
                 f"integrated_snvindels_v2a_27022019.GRCh38.phased.vcf.gz"
                 f" --sequencing --scaffold /tmp/genotyped_chr{i}_scaffold.vcf.gz"
                 f" --seed 123456789")
@@ -492,9 +491,9 @@ for trio_list in trio_nested_list:
         for i in range(22, 0, -1):
             if os.path.exists(f"/tmp/genotyped_chr{i}.vcf.gz"):
                 task_list.append(f"shapeit4 --input /tmp/genotyped_"
-                f"chr{i}.vcf.gz --map /shapeit4/maps/chr{i}.b37.gmap.gz"
+                f"chr{i}.vcf.gz --map /mnt/data/ceitec_cfg2/710000-CEITEC/713000-cmm/713016-bioit/resources/references/homo_sapiens/GRCh37/tool_data/shapeit4/maps/chr{i}.b37.gmap.gz"
                 f" --region {i} --output /tmp/phased_chr{i}_with_scaffold."
-                f"vcf.gz --reference {haplotype_path}ALL.chr{i}.phase3_shapeit2"
+                f"vcf.gz --reference /mnt/data/ceitec_cfg2/710000-CEITEC/713000-cmm/713016-bioit/resources/references/homo_sapiens/GRCh37/tool_data/shapeit4/haplotypes_reference/ALL.chr{i}.phase3_shapeit2"
                 f"_mvncall_integrated_v5b.20130502.genotypes.vcf.gz"
                 f" --sequencing --scaffold /tmp/genotyped_chr{i}_scaffold."
                 f"vcf.gz --seed 123456789")

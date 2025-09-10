@@ -27,15 +27,18 @@ for index, row in sample_tab.iterrows():
     sample_tab.loc[index,"sample_name_offspring"] = sample_tab_initial.loc[(sample_tab_initial["donor"]==row["sample_name"]) & (sample_tab_initial["origin_id"]=="offspring"),"sample_name"].to_string(index=False)
 
 
-wildcard_constraints:
-    vartype = "snvs|indels",
-    sample = "|".join(sample_tab_initial.sample_name),
+all_samples = sample_tab_initial["sample_name"].dropna().unique().tolist()
+all_donors  = sample_tab_initial["donor"].dropna().unique().tolist()         
 
+wildcard_constraints:
+    sample = "|".join(all_samples),
+    sample_name = "|".join(all_donors)
 
 ####################################
-include: "rules/triophaser.smk"
 ####################################
 # RULE ALL
 rule all:
     input:
        final_variants = expand("genomic_varcalls/{sample_name}_phased.vcf.gz", sample_name = sample_tab.sample_name)
+
+include: "rules/triophaser.smk"

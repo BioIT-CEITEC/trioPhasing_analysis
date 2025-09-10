@@ -43,7 +43,7 @@
       "origin_id": {
         "label": "mother/father/offspring",
         "type": "enum",
-        "default": "normal",
+        "default": "mother",
         "list": {
           "mother": "mother",
           "father": "father",
