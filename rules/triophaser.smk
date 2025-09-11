@@ -26,12 +26,3 @@ rule trioPhaser:
         assembly = config["assembly"]
     conda: "../wrappers/triophaser/env.yaml"
     script: "../wrappers/triophaser/script.py"
-
-rule test_postprocessing:
-    input: 
-        vcf = "genomic_varcalls/{sample}.vcf.gz"
-    output:
-        processed = "genomic_varcalls/{sample}_processed.vcf.gz"
-    log: "logs/trioPhaser/{sample}_processing.log"
-    conda: "../wrappers/gatk/env.yaml"
-    script: "../wrappers/processing/script.py"

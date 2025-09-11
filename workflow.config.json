@@ -13,7 +13,8 @@
     ],
     "outputs":[
       "config.json",
-      "logs/*"
+      "logs/*",
+      "genomic_varcalls/*"
     ]
   },
   "general_params": [
