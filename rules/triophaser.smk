@@ -20,7 +20,9 @@ rule trioPhaser:
     output:
         vcf = "genomic_varcalls/{sample_name}_phased.vcf.gz"
     log: "logs/trioPhaser/{sample_name}.log"
-    threads: 10
+    threads: 20
+    resources:
+        trio_phasing=1,
     params:
         call_quality = config["call_quality"],
         assembly = config["assembly"]

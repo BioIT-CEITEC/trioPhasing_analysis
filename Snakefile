@@ -33,8 +33,6 @@ all_donors  = sample_tab_initial["donor"].dropna().unique().tolist()
 wildcard_constraints:
     sample = "|".join(all_samples),
     sample_name = "|".join(all_donors)
-
-####################################
 ####################################
 # RULE ALL
 rule all:
